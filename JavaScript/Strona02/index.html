@@ -15,12 +15,18 @@
 
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="#wstep">Wstęp</a></li>
-                <li><a href="#tech">Technologie</a></li>
-                <li><a href="#zastosowanie">Zastosowanie</a></li>
-                <li><a href="#przyklad">Przykład</a></li>
+        <nav class="navbar">
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#wstep" class="nav-link">Wstęp</a></li>
+                <li class="nav-item"><a href="#tech" class="nav-link">Technologie</a></li>
+                <li class="nav-item"><a href="#zastosowanie" class="nav-link">Zastosowanie</a></li>
+                <li class="nav-item"><a href="#przyklad" class="nav-link">Przykład</a></li>
             </ul>
         </nav>
     </header>
@@ -190,27 +196,24 @@
                         Tutaj sprawdza się wciśnięte klawisze i przesuwa postać.</li>
                 </ul>
 
-
-
                 <p>Oto przykładowy kod prostego sterownika postaci:</p>
 
                 <pre><code><span class="keyword">using</span> UnityEngine;
 
-                <span class="keyword">public class</span> <span class="type">ProstyRuch</span> : <span class="type">MonoBehaviour</span>
-                    {
-                        <span class="comment">// Zmienna publiczna będzie widoczna w Inspektorze Unity!</span>
-                        <span class="keyword">public float</span> predkosc = <span class="string">5.0f</span>;
+<span class="keyword">public class</span> <span class="type">ProstyRuch</span> : <span class="type">MonoBehaviour</span>
+    {
+        <span class="comment">// Zmienna publiczna będzie widoczna w Inspektorze Unity!</span>
+        <span class="keyword">public float</span> predkosc = <span class="string">5.0f</span>;
 
-                        <span class="keyword">void</span> <span class="function">Update</span>()
-                        {
-                            <span class="comment">// Pobranie wciśniętych klawiszy (W/S lub strzałki)</span>
-                            <span class="keyword">float</span> ruchPionowy = <span class="type">Input</span>.<span class="function">GetAxis</span>(<span class="string">"Vertical"</span>);
+        <span class="keyword">void</span> <span class="function">Update</span>()
+        {
+            <span class="comment">// Pobranie wciśniętych klawiszy (W/S lub strzałki)</span>
+            <span class="keyword">float</span> ruchPionowy = <span class="type">Input</span>.<span class="function">GetAxis</span>(<span class="string">"Vertical"</span>);
 
-                            <span class="comment">// Przesunięcie obiektu do przodu w czasie rzeczywistym</span>
-                            transform.<span class="function">Translate</span>(<span class="type">Vector3</span>.forward * ruchPionowy * predkosc * <span class="type">Time</span>.deltaTime);
-                        }
-                    }              
-                     </code></pre>
+            <span class="comment">// Przesunięcie obiektu do przodu w czasie rzeczywistym</span>
+            transform.<span class="function">Translate</span>(<span class="type">Vector3</span>.forward * ruchPionowy * predkosc * <span class="type">Time</span>.deltaTime);
+        }
+    }</code></pre>
 
                 <p>
                     W powyższym przykładzie zmienna <code>predkosc</code> jest publiczna. Dzięki temu, po przeciągnięciu
@@ -262,6 +265,7 @@
         </article>
     </section>
 
+
     <footer>
         <div class="footer-container">
             <div class="footer-left">
@@ -278,44 +282,62 @@
 
     <div id="myModal" class="modal">
         <span class="close">&times;</span>
-        <img class="modal-content" id="img01">
+        <img class="modal-content" id="img01" alt="Powiększone zdjęcie">
         <div id="caption"></div>
     </div>
 
     <script>
-        // Pobierz modal
-        var modal = document.getElementById("myModal");
+        // === OBSŁUGA BURGER MENU ===
+        var hamburger = document.querySelector(".hamburger");
+        var navMenu = document.querySelector(".nav-menu");
+        var navLinks = document.querySelectorAll(".nav-link");
 
-        // Pobierz obraz wewnątrz modala i tekst podpisu
+        // Otwieranie/zamykanie menu po kliknięciu w burgera
+        hamburger.addEventListener("click", function () {
+            hamburger.classList.toggle("active");
+            navMenu.classList.toggle("active");
+        });
+
+        // Zamykanie menu po kliknięciu w konkretny link
+        for (var i = 0; i < navLinks.length; i++) {
+            navLinks[i].addEventListener("click", function () {
+                hamburger.classList.remove("active");
+                navMenu.classList.remove("active");
+            });
+        }
+
+        // === OBSŁUGA MODALA (GALERII) ===
+        var modal = document.getElementById("myModal");
         var modalImg = document.getElementById("img01");
         var captionText = document.getElementById("caption");
-
-
+        // Wybieramy wszystkie obrazki z galerii blendera i c#
         var images = document.querySelectorAll('.galleryBlender img, .galleryC img');
 
-        // Dodaj nasłuchiwanie kliknięcia do każdego obrazka
-        images.forEach(img =>
-            img.onclick = function () {
-                modal.style.display = "flex"; // ZMIANA: z "block" na "flex"
+        // Pętla po wszystkich obrazkach
+        for (var i = 0; i < images.length; i++) {
+            images[i].onclick = function () {
+                modal.style.display = "flex";
                 modalImg.src = this.src;
                 captionText.innerHTML = this.alt;
-            });
+            }
+        }
 
-        // Pobierz element <span>, który zamyka modal
+        // Przycisk zamykania (x)
         var span = document.getElementsByClassName("close")[0];
-
-        // Kiedy użytkownik kliknie na (x), zamknij modal
         span.onclick = function () {
             modal.style.display = "none";
         }
 
-        // Kiedy użytkownik kliknie gdziekolwiek poza zdjęciem, też zamknij
+        // Kliknięcie poza obrazkiem zamyka modal
         modal.onclick = function (event) {
             if (event.target === modal) {
                 modal.style.display = "none";
             }
         }
     </script>
+</body>
+
+</html>
 </body>
 
 </html>
