@@ -12,7 +12,7 @@ html, body {
     line-height: 1.6;
     background: 
         linear-gradient(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25)),
-        url('Obrazy/Tło.jpg') center/cover fixed;
+        url('/Obrazy/T%C5%82o.jpg') center/cover fixed;
 }
 
 /* --- NAWIGACJA (RESPONSYWNA) --- */
